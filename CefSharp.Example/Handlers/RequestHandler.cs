@@ -227,6 +227,13 @@ namespace CefSharp.Example.Handlers
                 return dataFilter;
             }
 
+            if (url.OriginalString == "http://www.pdf995.com/samples/pdf.pdf")
+            {
+                var dataFilter = new MemoryStreamResponseFilter();
+                responseDictionary.Add(request.Identifier, dataFilter);
+                return dataFilter;
+            }
+
             //return new PassThruResponseFilter();
             return null;
         }
@@ -244,6 +251,18 @@ namespace CefSharp.Example.Handlers
                     var dataLength = filter.Data.Length;
                     //NOTE: You may need to use a different encoding depending on the request
                     var dataAsUtf8String = Encoding.UTF8.GetString(data);                
+                }
+            }
+            if (url.OriginalString == "http://www.pdf995.com/samples/pdf.pdf")
+            {
+                MemoryStreamResponseFilter filter;
+                if (responseDictionary.TryGetValue(request.Identifier, out filter))
+                {
+                    string filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "TestDocument.pdf");
+                    using (System.IO.FileStream stream = new System.IO.FileStream(filePath, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+                    {
+                        stream.Write(filter.Data, 0, filter.Data.Length);
+                    }
                 }
             }
         }

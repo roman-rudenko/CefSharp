@@ -38,7 +38,7 @@ namespace CefSharp.WinForms.Example
 
         private void BrowserFormLoad(object sender, EventArgs e)
         {
-            AddTab(CefExample.DefaultUrl);
+            AddTab("http://www.pdf995.com/samples/pdf.pdf");
         }
 
         /// <summary>
